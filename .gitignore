@@ -1,0 +1,42 @@
+# === Node ===
+/frontend/node_modules
+/frontend/.next
+/frontend/.env
+/frontend/.env.local
+/frontend/package-lock.json
+
+# === Python / Django ===
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+.env
+.env.*
+db.sqlite3
+
+# === Backend ===
+/backend/__pycache__/
+/backend/*.sqlite3
+/backend/*.log
+/backend/.env
+
+# === FastAPI Service ===
+/fastapi_service/__pycache__/
+/fastapi_service/*.log
+/fastapi_service/.env
+
+# === General ===
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.bak
+*.tmp
+
+# === Render / Deployment ===
+render.yaml
+.dockerignore
+Dockerfile

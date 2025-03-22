@@ -1,0 +1,15 @@
+Django>=4.2
+djangorestframework>=3.14
+psycopg2-binary>=2.9
+python-dotenv
+gunicorn
+uvicorn
+channels
+channels-redis
+django-cors-headers
+drf-yasg             # API docs (Swagger/OpenAPI)
+Pillow               # Image handling
+whitenoise           # Serve static files in prod (fallback)
+fastapi
+httpx         # async HTTP client
+pydantic
