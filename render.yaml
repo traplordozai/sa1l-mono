@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: sa1l-backend
+    rootDir: backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: settings.dev
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: ALLOWED_HOSTS
+        value: sa1l-backend.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://sa1l-frontend.onrender.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://sa1l-frontend.onrender.com
+
+  - type: web
+    name: sa1l-fastapi
+    rootDir: fastapi_service
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 9000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+
+  - type: web
+    name: sa1l-frontend
+    rootDir: frontend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    staticPublishPath: .next
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://sa1l-backend.onrender.com/api
+      - key: NEXT_PUBLIC_WS_BASE_URL
+        value: wss://sa1l-backend.onrender.com/ws/chat/

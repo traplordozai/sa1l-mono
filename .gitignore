@@ -37,6 +37,5 @@ db.sqlite3
 *.tmp
 
 # === Render / Deployment ===
-render.yaml
 .dockerignore
-Dockerfile
+Dockerfile!
