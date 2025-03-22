@@ -6,7 +6,7 @@ services:
       - "8000:8000"
     env_file:
       - ./backend/.env
-    command: gunicorn backend.asgi:application -k uvicorn.workers.UvicornWorker
+    command: gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker
 
   fastapi_service:
     build: ./fastapi_service
