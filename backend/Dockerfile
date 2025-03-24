@@ -1,3 +1,5 @@
+# Install python-dotenv
+RUN pip install python-dotenv
 FROM python:3.11-slim
 WORKDIR /app
 COPY . .
