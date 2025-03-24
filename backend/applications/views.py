@@ -5,7 +5,7 @@ from rest_framework import status
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404
 from .utils.conflicts import detect_conflicts, get_conflict_details, get_user_conflicts_summary
-from .models import Application
+from .models import InternshipApplication
 
 class ConflictCheckView(APIView):
     """
@@ -42,13 +42,13 @@ class ConflictCheckView(APIView):
                 )
                 
             application = get_object_or_404(
-                Application,
+                InternshipApplication,
                 id=accepted_offer_id,
                 candidate=request.user
             )
             
             # Update other offers to rejected
-            Application.objects.filter(
+            InternshipApplication.objects.filter(
                 candidate=request.user,
                 status='offered'
             ).exclude(
@@ -70,7 +70,7 @@ class ConflictCheckView(APIView):
                 )
                 
             application = get_object_or_404(
-                Application,
+                InternshipApplication,
                 id=offer_id,
                 candidate=request.user
             )
@@ -115,7 +115,7 @@ class OfferCountdownView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, application_id):
-        app = Application.objects.get(id=application_id, candidate=request.user)
+        app = InternshipApplication.objects.get(id=application_id, candidate=request.user)
 
         if app.status != "offered" or not app.expires_at:
             return Response({"message": "No active offer"}, status=400)

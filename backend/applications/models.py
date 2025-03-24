@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class ApplicationNote(models.Model):
-    application = models.ForeignKey("applications.Application", on_delete=models.CASCADE, related_name="notes")
+    application = models.ForeignKey("applications.InternshipApplication", on_delete=models.CASCADE, related_name="notes")
     author = models.ForeignKey("users.User", on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -11,16 +11,16 @@ class ApplicationNote(models.Model):
         ordering = ['-created_at']
 
 class ApplicationStatusHistory(models.Model):
-    application = models.ForeignKey("applications.Application", on_delete=models.CASCADE, related_name="status_history")
-    old_status = models.CharField(max_length=20, choices=Application.STATUS_CHOICES)
-    new_status = models.CharField(max_length=20, choices=Application.STATUS_CHOICES)
+    application = models.ForeignKey("applications.InternshipApplication", on_delete=models.CASCADE, related_name="status_history")
+    old_status = models.CharField(max_length=20, choices=InternshipApplication.STATUS_CHOICES)
+    new_status = models.CharField(max_length=20, choices=InternshipApplication.STATUS_CHOICES)
     changed_by = models.ForeignKey("users.User", on_delete=models.CASCADE)
     changed_at = models.DateTimeField(auto_now_add=True)
     reason = models.TextField(blank=True)
 
     class Meta:
         ordering = ['-changed_at']
-        verbose_name_plural = "Application status histories"
+        verbose_name_plural = "InternshipApplication status histories"
 
 class InternshipApplication(models.Model):
     STATUS_CHOICES = [
@@ -49,13 +49,13 @@ class InternshipApplication(models.Model):
 
     class Meta:
         ordering = ['-updated_at']
-        verbose_name = "Application"
+        verbose_name = "InternshipApplication"
         verbose_name_plural = "Applications"
 
     def save(self, *args, **kwargs):
         # Track status changes
         if self.pk:
-            old_instance = Application.objects.get(pk=self.pk)
+            old_instance = InternshipApplication.objects.get(pk=self.pk)
             if old_instance.status != self.status:
                 ApplicationStatusHistory.objects.create(
                     application=self,

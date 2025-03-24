@@ -7,7 +7,7 @@ import requests
 from django.conf import settings
 from .models import ImportJob
 from .serializers import ImportJobSerializer
-from applications.models import Application
+from applications.models import InternshipApplication
 from internships.models import Internship
 from django.contrib.auth import get_user_model
 
@@ -39,7 +39,7 @@ def detect_user_conflicts(request):
         if overlaps.exists():
             results.append({"type": "date_overlap", "internship": a.id})
 
-    offers = Application.objects.filter(candidate=user, status="offered")
+    offers = InternshipApplication.objects.filter(candidate=user, status="offered")
     if offers.count() > 1:
         results.append({"type": "multiple_offers", "count": offers.count()})
 

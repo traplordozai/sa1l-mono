@@ -1,5 +1,5 @@
 from internships.models import Internship
-from applications.models import Application
+from applications.models import InternshipApplication
 from django.db.models import Q
 from django.utils import timezone
 
@@ -30,7 +30,7 @@ def detect_conflicts(user):
             })
 
     # Check for multiple active offers
-    active_offers = Application.objects.filter(
+    active_offers = InternshipApplication.objects.filter(
         candidate=user,
         status="offered",
         expires_at__gt=timezone.now()
@@ -43,7 +43,7 @@ def detect_conflicts(user):
         })
 
     # Check for expired offers that haven't been marked as stale
-    expired_offers = Application.objects.filter(
+    expired_offers = InternshipApplication.objects.filter(
         candidate=user,
         status="offered",
         expires_at__lt=timezone.now()
@@ -82,7 +82,7 @@ def get_conflict_details(conflict):
         }
     
     elif conflict["type"] == "competing_offers":
-        offers = Application.objects.filter(id__in=conflict["offer_ids"])
+        offers = InternshipApplication.objects.filter(id__in=conflict["offer_ids"])
         return {
             "message": f"You have {conflict['count']} competing offers",
             "offers": [
@@ -96,7 +96,7 @@ def get_conflict_details(conflict):
         }
     
     elif conflict["type"] == "expired_offer":
-        offer = Application.objects.get(id=conflict["application_id"])
+        offer = InternshipApplication.objects.get(id=conflict["application_id"])
         return {
             "message": f"Offer for {offer.position} expired at {conflict['expired_at']}",
             "offer": {
@@ -124,14 +124,14 @@ def resolve_competing_offers(user, accepted_application_id):
     """
     Resolve competing offers by accepting one and rejecting others.
     """
-    Application.objects.filter(
+    InternshipApplication.objects.filter(
         candidate=user,
         status="offered"
     ).exclude(
         id=accepted_application_id
     ).update(status="rejected")
     
-    accepted = Application.objects.get(id=accepted_application_id)
+    accepted = InternshipApplication.objects.get(id=accepted_application_id)
     accepted.status = "hired"
     accepted.save()
     
