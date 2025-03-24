@@ -1,9 +1,17 @@
 from django.core.management.base import BaseCommand
-from applications.models import Application
 from django.utils import timezone
-from users.utils import notify_user
 from datetime import datetime
 import logging
+
+try:
+    from applications.models import Application
+except ImportError:
+    from backend.applications.models import Application
+
+try:
+    from users.utils import notify_user
+except ImportError:
+    from backend.users.utils import notify_user
 
 logger = logging.getLogger(__name__)
 
