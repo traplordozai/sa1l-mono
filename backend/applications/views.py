@@ -5,7 +5,6 @@ from rest_framework import status
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404
 from .utils.conflicts import detect_conflicts, get_conflict_details, get_user_conflicts_summary
-from .models import Application
 
 class ConflictCheckView(APIView):
     """
@@ -16,6 +15,7 @@ class ConflictCheckView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+    from .models import InternshipApplication
         """Get all conflicts for the current user"""
         user = request.user
         format_type = request.query_params.get('format', 'basic')
@@ -29,6 +29,7 @@ class ConflictCheckView(APIView):
             return Response(detect_conflicts(user))
 
     def post(self, request):
+    from .models import InternshipApplication
         """Resolve a specific conflict"""
         conflict_type = request.data.get('type')
         action = request.data.get('action')
@@ -42,13 +43,13 @@ class ConflictCheckView(APIView):
                 )
                 
             application = get_object_or_404(
-                Application,
+                InternshipApplication,
                 id=accepted_offer_id,
                 candidate=request.user
             )
             
             # Update other offers to rejected
-            Application.objects.filter(
+            InternshipApplication.objects.filter(
                 candidate=request.user,
                 status='offered'
             ).exclude(
@@ -70,7 +71,7 @@ class ConflictCheckView(APIView):
                 )
                 
             application = get_object_or_404(
-                Application,
+                InternshipApplication,
                 id=offer_id,
                 candidate=request.user
             )
@@ -92,6 +93,7 @@ class ConflictDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, conflict_id):
+    from .models import InternshipApplication
         conflicts = detect_conflicts(request.user)
         try:
             conflict = next(c for c in conflicts if c.get('id') == conflict_id)
@@ -109,13 +111,15 @@ class ConflictSummaryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+    from .models import InternshipApplication
         return Response(get_user_conflicts_summary(request.user))
 
 class OfferCountdownView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, application_id):
-        app = Application.objects.get(id=application_id, candidate=request.user)
+    from .models import InternshipApplication
+        app = InternshipApplication.objects.get(id=application_id, candidate=request.user)
 
         if app.status != "offered" or not app.expires_at:
             return Response({"message": "No active offer"}, status=400)

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from applications.models import Application
+from applications.models import InternshipApplication
 from django.utils import timezone
 from users.utils import notify_user
 from datetime import datetime
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         now = timezone.now()
 
-        qs = Application.objects.filter(status="offered", expires_at__lt=now)
+        qs = InternshipApplication.objects.filter(status="offered", expires_at__lt=now)
 
         if start:
             start_dt = timezone.make_aware(datetime.strptime(start, "%Y-%m-%d"))
