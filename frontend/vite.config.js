@@ -26,3 +26,9 @@ module.exports = defineConfig({
     host: true,
   },
 });
+
+export default defineConfig({
+  preview: {
+    port: process.env.PORT || 4173
+  }
+})

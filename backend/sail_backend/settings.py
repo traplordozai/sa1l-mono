@@ -1,4 +1,4 @@
-INSTALLED_APPS += ["rest_framework", "rest_framework_simplejwt",
+INSTALLED_APPS = ["rest_framework", "rest_framework_simplejwt",
                    "rest_framework_simplejwt.token_blacklist",
                    "forms",
                    "drf_spectacular",
@@ -37,7 +37,16 @@ CHANNEL_LAYERS = {
     },
 }
 
-MIDDLEWARE += ['users.middleware.UserActivityLoggerMiddleware']
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middleware.LogActivityMiddleware',
+]
 
 LOGGING = {
     "version": 1,
