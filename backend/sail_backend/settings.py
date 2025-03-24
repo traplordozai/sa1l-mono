@@ -84,3 +84,5 @@ import os
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
 CELERY_IMPORTS = ['config.tasks']
+
+SECRET_KEY = os.getenv("SECRET_KEY", "secret")
