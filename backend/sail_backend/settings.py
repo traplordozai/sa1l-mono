@@ -1,6 +1,17 @@
 INSTALLED_APPS += ["rest_framework", "rest_framework_simplejwt",
                    "rest_framework_simplejwt.token_blacklist",
-                   "forms"
+                   "forms",
+                   "drf_spectacular",
+                   "corsheaders",
+                   "users",
+                   "internships",
+                   "matching",
+                   "feedback",
+                   "config",
+                   "communication",
+                   "django_celery_beat",
+                   "applications",
+                   "django_celery_results",
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -40,9 +51,6 @@ LOGGING = {
         },
     },
 }
-
-# DeepSeek AI API Configuration
-DEEPSEEK_API_KEY = 'your-api-key-here'  # Remember to use environment variables in production
 
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
