@@ -22,7 +22,7 @@ class ApplicationStatusHistory(models.Model):
         ordering = ['-changed_at']
         verbose_name_plural = "Application status histories"
 
-class Application(models.Model):
+class InternshipApplication(models.Model):
     STATUS_CHOICES = [
         ("applied", "Applied"),
         ("interviewing", "Interviewing"),
