@@ -1,0 +1,10 @@
+Django>=4.2
+gunicorn
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+PyPDF2
+channels
+channels_redis
+daphne
+requests
