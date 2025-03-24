@@ -1,8 +1,8 @@
-Django>=4.2
+Django==4.2.11
 gunicorn
-djangorestframework
+djangorestframework==3.15.1
 djangorestframework-simplejwt
-django-cors-headers
+django-cors-headers==4.3.1
 PyPDF2
 channels
 channels_redis
@@ -13,3 +13,5 @@ redis
 django-celery-beat
 django-celery-results
 drf-spectacular
+psycopg2-binary==2.9.9
+python-dotenv==1.0.1
