@@ -1,37 +1,17 @@
-version: '3'
-
+version: "3"
 services:
   backend:
-    build: ./backend
+    build: .
     command: >
       sh -c "python manage.py migrate &&
-             gunicorn sail_backend.wsgi:application --bind 0.0.0.0:8000"
+             gunicorn sail_backend.wsgi --bind 0.0.0.0:8000"
+    volumes:
+      - .:/code
     ports:
       - "8000:8000"
-    env_file:
-      - .env
+    environment:
+      - DEBUG=1
     depends_on:
-      - postgres
       - redis
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    command: npm run build && npm run start
-    env_file:
-      - .env
-
   redis:
     image: redis:alpine
-    ports:
-      - "6379:6379"
-
-  postgres:
-    image: postgres:14
-    environment:
-      POSTGRES_DB: sail
-      POSTGRES_USER: sail
-      POSTGRES_PASSWORD: sail
-    ports:
-      - "5432:5432"
